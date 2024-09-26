@@ -1,18 +1,34 @@
+"use client";
+
 import Dashboard from "@/components/Dashboard";
 import LandingPage from "@/components/LandingPage";
-import Image from "next/image";
+import Sections from "@/components/Sections";
+import TechStack from "@/components/TechStack";
+import { useState } from "react";
 
 export default function Home() {
+  const [theme, setTheme] = useState("dark");
+
   return (
-    <main>
-      <div
-        className="h-[85vh] bg-[#c7c7c7]"> 
+    <main className={`${theme}`}>
+      <TechStack />
+
+      
+      <Sections
+        // theme="light"
+        // setTheme={setTheme}
+        className="h-[80vh] backdrop-blur-sm "
+      >
         <LandingPage />
-      </div>
-      <div
-        className="h-screen bg-gradient-to-b from-[#c7c7c7] to-[#ffffff]">
+      </Sections>
+      <Sections
+        // theme="light"
+        // setTheme={setTheme}
+        className="bg-neutral-200 h-[50vh] testing relative z-10"
+      >
         <Dashboard />
-      </div>
+      </Sections>
+
     </main>
   );
 }
