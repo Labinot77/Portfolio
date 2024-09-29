@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Dialog,
   DialogContent,
@@ -7,12 +9,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-
+import { EmailValidation } from "@/lib/Email/emailValidation";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { sendEmail } from "@/lib/mail";
 
 const ContactMe = () => {
+  const form = useForm<z.infer<typeof EmailValidation>>({
+    resolver: zodResolver(EmailValidation),
+    defaultValues: {
+      email: '',
+    },
+  })
+
+  const onSubmit = async (data: z.infer<typeof EmailValidation>) => {
+    console.log(data)
+
+    console.log("API Key:", process.env.RESEND_API_KEY);
+
+    await sendEmail(data.email, data.content)
+  }
+
+
   return (
     <main className="flex justify-center items-center ">
       <Dialog >
@@ -22,29 +52,42 @@ const ContactMe = () => {
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
+        <DialogTitle>Send an Email</DialogTitle>
+        <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+          <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Content</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <DialogFooter>
+          <Button type="submit">Send Email</Button>
         </DialogFooter>
+      </form>
+    </Form>
+
+         
       </DialogContent>
       </Dialog>
     </main>

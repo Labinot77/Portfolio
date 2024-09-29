@@ -1,5 +1,3 @@
-import { useMotionValueEvent, useScroll } from 'framer-motion';
-import { useRef } from 'react'
 
 interface Props {
   children: React.ReactNode;

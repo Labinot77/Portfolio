@@ -16,7 +16,7 @@ export const MyProjects = [
     image: "/assets/project-3.png",
     websiteLink: "#",
     sourceLink: "#",
-    bgColor: "#313442",
+    bgColor: "#65434A",
     dark: false,
   },
   {
@@ -25,7 +25,7 @@ export const MyProjects = [
     image: "/assets/project-3.png",
     websiteLink: "#",
     sourceLink: "#",
-    bgColor: "#313442",
+    bgColor: "#65A34A",
     dark: false,
   },
   // {
